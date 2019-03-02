@@ -1,0 +1,32 @@
+{
+    "name": "snailweb/php-daemon",
+    "description": "PHP Daemon",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Xavier RODET",
+            "email": "xavier.rodet@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.3.1",
+            "ext-pcntl": "7.3.1"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Snailweb\\Utils\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Snailweb\\Utils\\Daemon\\Tests\\": "tests/"
+        }
+    }
+}
