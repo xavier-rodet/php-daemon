@@ -3,6 +3,7 @@
 namespace Snailweb\Utils\Daemon\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Snailweb\Utils\RunCondition\Iterate;
 
 class DaemonUnitTest extends TestCase
 {
@@ -43,5 +44,12 @@ class DaemonUnitTest extends TestCase
         $expectedRunTime = $this->invokeMethod($this->daemon, 'getDefaultOptions')['process_min_exec_time'];
 
         $this->assertGreaterThanOrEqual($expectedRunTime, $runTime);
+    }
+
+    public function testRun()
+    {
+        $this->daemon->run(new Iterate(5));
+
+        // do tests ....
     }
 }
