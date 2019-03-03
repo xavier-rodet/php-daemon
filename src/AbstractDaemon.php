@@ -6,6 +6,7 @@ namespace Snailweb\Utils;
 
 use Snailweb\Utils\RunCondition\AbstractRunCondition;
 use Snailweb\Utils\RunCondition\Forever;
+use Snailweb\Utils\RunCondition\Never;
 
 abstract class AbstractDaemon
 {
@@ -128,8 +129,7 @@ abstract class AbstractDaemon
      */
     protected function handleSoftExit()
     {
-        $runCondition = function() { return false; };
-        $this->updateRunCondition($runCondition);
+        $this->updateRunCondition(new Never());
     }
 
 
