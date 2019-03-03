@@ -15,17 +15,6 @@ class DaemonUnitTest extends TestCase
     {
 //        $this->daemon = new FoobarDaemon();
         $this->daemon = $this->getMockForAbstractClass('Snailweb\Utils\AbstractDaemon');
-        $this->daemon->expects($this->any())
-            ->method('setUp')
-            ->willReturn('setUp');
-
-        $this->daemon->expects($this->any())
-            ->method('tearDown')
-            ->willReturn('tearDown');
-
-        $this->daemon->expects($this->any())
-            ->method('process')
-            ->willReturn('process');
     }
 
     public function tearDown() : void
@@ -48,8 +37,22 @@ class DaemonUnitTest extends TestCase
 
     public function testRun()
     {
-        $this->daemon->run(new Iterate(5));
+        $this->daemon->expects($this->once())
+            ->method('setUp')
+            ->willReturnCallback(function() { echo 'setUp_'; });
 
+        $this->daemon->expects($this->once())
+            ->method('tearDown')
+            ->willReturnCallback(function() { echo 'tearDown_'; });
+
+        $this->daemon->expects($this->any()) // TODO 3 times ?
+            ->method('process')
+            ->willReturnCallback(function() { echo 'process_'; });
+
+        $this->daemon->run(new Iterate(3));
+
+        // TODO : better way to try order / number of call of internal methods ?
+        $this->expectOutputString('setUp_process_process_process_tearDown_');
         // do tests ....
     }
 }

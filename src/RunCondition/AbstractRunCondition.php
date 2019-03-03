@@ -17,12 +17,13 @@ abstract class AbstractRunCondition
 
     public function test(): bool
     {
-        $this->numberOfIterations++;
-
-        if(1 === $this->numberOfIterations)
+        if(0 === $this->numberOfIterations)
             $this->initialize();
 
-        return $this->condition->__invoke();
+        $test = $this->condition->__invoke();
+        $this->numberOfIterations++;
+
+        return $test;
     }
 
     protected function numberOfIterations()
