@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Snailweb\Utils;
 
-abstract class Daemon
+use Snailweb\Utils\RunCondition\AbstractRunCondition;
+use Snailweb\Utils\RunCondition\Forever;
+
+abstract class AbstractDaemon
 {
     protected $options = [];
     protected $runStartTime;
@@ -16,12 +19,12 @@ abstract class Daemon
         $this->options = array_merge($this->getDefaultOptions(), $options);
     }
 
-    final public function run(bool $forever = true, int $ttl = 0)
+    final public function run(?AbstractRunCondition $condition = null)
     {
-        $this->initRun($forever, $ttl);
+        $this->initRun($condition);
         $this->setUp();
 
-        while ($this->runCondition->__invoke()) {
+        while ($this->runCondition->test()) {
             $this->initProcess();
             $this->process();
 
@@ -43,11 +46,15 @@ abstract class Daemon
         ];
     }
 
-    final protected function initRun(bool $forever, int $ttl)
+    final protected function initRun(?AbstractRunCondition $condition)
     {
         $this->runStartTime = time();
         $this->listenToSignals();
-        $this->initRunCondition($forever, $ttl);
+
+        if(is_null($condition)) {
+            $condition = new Forever();
+        }
+        $this->updateRunCondition($condition);
     }
 
     final protected function initProcess()
@@ -101,27 +108,9 @@ abstract class Daemon
         }
     }
 
-    /**
-     * Initialize run condition depending on run parameters.
-     * This method should be override if you need to handle specific run conditions.
-     *
-     * @param bool $forever
-     * @param int  $ttl
-     */
-    protected function initRunCondition(bool $forever, int $ttl)
+    final protected function updateRunCondition(AbstractRunCondition $condition)
     {
-        if ($forever) {
-            $runCondition = function () { return true; };
-        } else {
-            $runCondition = function () use ($ttl) { return time() < $this->runStartTime + $ttl; };
-        }
-
-        $this->updateRunCondition($runCondition);
-    }
-
-    final protected function updateRunCondition(\Closure $runCondition)
-    {
-        $this->runCondition = $runCondition;
+        $this->runCondition = $condition;
     }
 
     final protected function hasReachedTTL(int $timeout): bool

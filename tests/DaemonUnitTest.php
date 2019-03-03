@@ -6,13 +6,30 @@ use PHPUnit\Framework\TestCase;
 
 class DaemonUnitTest extends TestCase
 {
-    use AccessProtected;
+    use AccessProtectedTrait;
     
     private $daemon;
 
     public function setUp() : void
     {
-        $this->daemon = new FoobarDaemon();
+//        $this->daemon = new FoobarDaemon();
+        $this->daemon = $this->getMockForAbstractClass('Snailweb\Utils\AbstractDaemon');
+        $this->daemon->expects($this->any())
+            ->method('setUp')
+            ->willReturn('setUp');
+
+        $this->daemon->expects($this->any())
+            ->method('tearDown')
+            ->willReturn('tearDown');
+
+        $this->daemon->expects($this->any())
+            ->method('process')
+            ->willReturn('process');
+    }
+
+    public function tearDown() : void
+    {
+        $this->daemon = null;
     }
 
     public function testAssureProcessMinExecTime()

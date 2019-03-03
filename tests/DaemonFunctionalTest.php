@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 class DaemonFunctionalTest extends TestCase
 {
-    use AccessProtected;
+    use AccessProtectedTrait;
 
     // Need to manage process
     // Start process
@@ -65,15 +65,15 @@ class DaemonFunctionalTest extends TestCase
     }
 
 
-    public function testRun()
-    {
-        $pid = $this->startProcess('runFoobar');
-
-        $this->assertNotNull($pid, "pid is null");
-        $this->assertTrue($this->isProcessRunning($pid));
-
-        return $pid;
-    }
+//    public function testRun()
+//    {
+//        $pid = $this->startProcess('runFoobar');
+//
+//        $this->assertNotNull($pid, "pid is null");
+//        $this->assertTrue($this->isProcessRunning($pid));
+//
+//        return $pid;
+//    }
 
 //    /**
 //     * @depends testRun

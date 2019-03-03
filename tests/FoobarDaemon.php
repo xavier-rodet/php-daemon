@@ -4,9 +4,9 @@
 namespace Snailweb\Utils\Daemon\Tests;
 
 
-use Snailweb\Utils\Daemon;
+use Snailweb\Utils\AbstractDaemon;
 
-class FoobarDaemon extends Daemon
+class FoobarDaemon extends AbstractDaemon
 {
 
     protected function process()

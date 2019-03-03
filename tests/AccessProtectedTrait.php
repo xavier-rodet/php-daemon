@@ -4,7 +4,7 @@
 namespace Snailweb\Utils\Daemon\Tests;
 
 
-trait AccessProtected
+trait AccessProtectedTrait
 {
     /**
      * Call protected/private method of a class.
