@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\Daemon\Tests;
+namespace Snailweb\Daemon\Tests;
 
 
-use Snailweb\Utils\AbstractDaemon;
+use Snailweb\Daemon\AbstractDaemon;
 
 class FoobarDaemon extends AbstractDaemon
 {

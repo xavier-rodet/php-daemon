@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Snailweb\Utils\Strategy;
+namespace Snailweb\Daemon\Strategy;
 
 
 abstract class AbstractStrategy

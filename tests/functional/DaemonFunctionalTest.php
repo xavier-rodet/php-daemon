@@ -1,6 +1,6 @@
 <?php
 //
-//namespace Snailweb\Utils\Daemon\Tests;
+//namespace Snailweb\Daemon\Tests;
 //
 //use PHPUnit\Framework\TestCase;
 //

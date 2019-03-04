@@ -21,12 +21,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Snailweb\\Utils\\": "src/"
+            "Snailweb\\Daemon\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Snailweb\\Utils\\Daemon\\Tests\\": "tests/"
+            "Snailweb\\Daemon\\Tests\\": "tests/"
         }
     }
 }

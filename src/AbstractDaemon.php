@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Snailweb\Utils;
+namespace Snailweb\Daemon;
 
-use Snailweb\Utils\Strategy\AbstractStrategy;
-use Snailweb\Utils\Strategy\Forever;
-use Snailweb\Utils\Strategy\Never;
+use Snailweb\Daemon\Strategy\AbstractStrategy;
+use Snailweb\Daemon\Strategy\Forever;
+use Snailweb\Daemon\Strategy\Never;
 
 abstract class AbstractDaemon
 {

@@ -7,7 +7,7 @@ PHP Daemon which can intercept signals to stop running properly.
 
 Example of Daemon implementation :
 ```
-class FoobarDaemon extends Snailweb\Utils\Daemon {
+class FoobarDaemon extends Snailweb\Daemon\AbstractDaemon {
 
     protected $dao;
 
