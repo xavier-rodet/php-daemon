@@ -3,7 +3,7 @@
 namespace Snailweb\Utils\Daemon\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Snailweb\Utils\RunCondition\Iterate;
+use Snailweb\Utils\Strategy\Iteration;
 
 class DaemonUnitTest extends TestCase
 {
@@ -49,7 +49,7 @@ class DaemonUnitTest extends TestCase
             ->method('process')
             ->willReturnCallback(function() { echo 'process_'; });
 
-        $this->daemon->run(new Iterate(3));
+        $this->daemon->run(new Iteration(3));
 
         // TODO : better way to try order / number of call of internal methods ?
         $this->expectOutputString('setUp_process_process_process_tearDown_');

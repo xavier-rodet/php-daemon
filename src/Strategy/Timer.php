@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\RunCondition;
+namespace Snailweb\Utils\Strategy;
 
 
-class Timer extends AbstractRunCondition
+class Timer extends AbstractStrategy
 {
     private $maxTime;
     private $softExit;

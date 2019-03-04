@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\RunCondition;
+namespace Snailweb\Utils\Strategy;
 
 
-class Forever extends AbstractRunCondition
+class Forever extends AbstractStrategy
 {
     protected function buildCondition() : \Closure
     {

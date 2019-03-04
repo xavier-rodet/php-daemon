@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace Snailweb\Utils;
 
-use Snailweb\Utils\RunCondition\AbstractRunCondition;
-use Snailweb\Utils\RunCondition\Forever;
-use Snailweb\Utils\RunCondition\Never;
+use Snailweb\Utils\Strategy\AbstractStrategy;
+use Snailweb\Utils\Strategy\Forever;
+use Snailweb\Utils\Strategy\Never;
 
 abstract class AbstractDaemon
 {
     protected $options = [];
     protected $runStartTime;
     protected $processStartTime;
-    private $runCondition;
+    private $strategy;
 
     public function __construct(array $options = [])
     {
         $this->options = array_merge($this->getDefaultOptions(), $options);
     }
 
-    final public function run(?AbstractRunCondition $condition = null)
+    final public function run(?AbstractStrategy $strategy = null)
     {
-        $this->initRun($condition);
+        $this->initRun($strategy);
         $this->setUp();
 
-        while ($this->runCondition->test()) {
+        while ($this->strategy->test()) {
             $this->initProcess();
             $this->process();
 
@@ -47,15 +47,15 @@ abstract class AbstractDaemon
         ];
     }
 
-    final protected function initRun(?AbstractRunCondition $condition)
+    final protected function initRun(?AbstractStrategy $strategy)
     {
         $this->runStartTime = time();
         $this->listenToSignals();
 
-        if(is_null($condition)) {
-            $condition = new Forever();
+        if(is_null($strategy)) {
+            $strategy = new Forever();
         }
-        $this->updateRunCondition($condition);
+        $this->updateStrategy($strategy);
     }
 
     final protected function initProcess()
@@ -109,9 +109,9 @@ abstract class AbstractDaemon
         }
     }
 
-    final protected function updateRunCondition(AbstractRunCondition $condition)
+    final protected function updateStrategy(AbstractStrategy $strategy)
     {
-        $this->runCondition = $condition;
+        $this->strategy = $strategy;
     }
 
     final protected function hasReachedTTL(int $timeout): bool
@@ -129,7 +129,7 @@ abstract class AbstractDaemon
      */
     protected function handleSoftExit()
     {
-        $this->updateRunCondition(new Never());
+        $this->updateStrategy(new Never());
     }
 
 

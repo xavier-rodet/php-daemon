@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\RunCondition;
+namespace Snailweb\Utils\Strategy;
 
 
-class Iterate extends AbstractRunCondition
+class Iteration extends AbstractStrategy
 {
     protected $maxIterations;
 

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\RunCondition;
+namespace Snailweb\Utils\Strategy;
 
 
-class Never extends AbstractRunCondition
+class Never extends AbstractStrategy
 {
 
     protected function buildCondition(): \Closure

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Snailweb\Utils\RunCondition;
+namespace Snailweb\Utils\Strategy;
 
 
-abstract class AbstractRunCondition
+abstract class AbstractStrategy
 {
     private $condition;
     private $numberOfIterations;
