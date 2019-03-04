@@ -7,20 +7,31 @@ use PHPUnit\Framework\TestCase;
 
 class IterationTest extends TestCase
 {
-    protected $strategy;
-
-    public function setUp() : void
+    /**
+     * @dataProvider iterationValues
+     * @param int $iterations
+     */
+    public function testStrategy(int $iterations)
     {
-        $this->strategy = $this->getMockClass('Snailweb\Daemon\Strategy\Iteration');
+        $strategy = new Iteration($iterations);
+
+        // in-range iterations will pass the test
+        for($i = 1; $i <= $iterations; $i++) {
+            $this->assertTrue($strategy->test(), sprintf('at iteration %d/%d)', $i, $iterations));
+        }
+
+        // out-range iteration will fail the test
+        $this->assertFalse($strategy->test(), sprintf('at iteration %d/%d', ($iterations+1), $iterations));
     }
 
-    public function tearDown() : void
+    public function iterationValues()
     {
-        unset($this->strategy);
-    }
-
-    public function testStrategy()
-    {
-        
+        return [
+            [rand(1, 100)],
+            [rand(1, 100)],
+            [rand(1, 100)],
+            [rand(1, 100)],
+            [rand(1, 100)],
+        ];
     }
 }
