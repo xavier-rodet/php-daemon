@@ -22,7 +22,6 @@ final class Daemon implements DaemonInterface
     private $signalsManager;
     private $strategy;
 
-
     public function __construct(ProcessorInterface $processor, SignalsManagerInterface $signalsManager)
     {
         $this->options = $this->getDefaultOptions();
@@ -33,7 +32,7 @@ final class Daemon implements DaemonInterface
         $this->signalsManager->getListener()->attach($this);
     }
 
-    public function run(StrategyInterface $strategy = null) : void
+    public function run(StrategyInterface $strategy = null): void
     {
         $this->initRun($strategy);
         $this->getProcessor()->setUp();
@@ -51,6 +50,48 @@ final class Daemon implements DaemonInterface
         $this->getProcessor()->tearDown();
     }
 
+    public function assignOptions(array $options): void
+    {
+        $this->options = array_merge($this->options, $options);
+    }
+
+    public function getProcessor(): ProcessorInterface
+    {
+        return $this->processor;
+    }
+
+    public function setProcessor(ProcessorInterface $processor): void
+    {
+        $this->processor = $processor;
+    }
+
+    public function getStrategy(): StrategyInterface
+    {
+        return $this->strategy;
+    }
+
+    public function setStrategy(StrategyInterface $strategy): void
+    {
+        $this->strategy = $strategy;
+    }
+
+    /**
+     * Receive update from subject.
+     *
+     * @see https://php.net/manual/en/splobserver.update.php
+     *
+     * @param SplSubject $subject <p>
+     *                            The <b>SplSubject</b> notifying the observer of an update.
+     *                            </p>
+     *
+     * @since 5.1.0
+     */
+    public function update(SplSubject $subject): void
+    {
+        if ($subject instanceof SignalsListener) {
+            $this->signalsManager->handler()->handle($subject->signal(), $this);
+        }
+    }
 
     private function getDefaultOptions(): array
     {
@@ -61,72 +102,31 @@ final class Daemon implements DaemonInterface
         ];
     }
 
-    /**
-     * @param array $options
-     */
-    public function assignOptions(array $options): void
-    {
-        $this->options = array_merge($this->options, $options);
-    }
-
     private function getOption(string $name)
     {
-        if(!isset($this->options[$name])) {
+        if (!isset($this->options[$name])) {
             throw new InvalidArgumentException(sprintf("%s option doesn't exist", $name));
         }
 
         return $this->options[$name];
     }
 
-    /**
-     * @return ProcessorInterface
-     */
-    public function getProcessor(): ProcessorInterface
-    {
-        return $this->processor;
-    }
-
-    /**
-     * @param ProcessorInterface $processor
-     */
-    public function setProcessor(ProcessorInterface $processor): void
-    {
-        $this->processor = $processor;
-    }
-
-    /**
-     * @return StrategyInterface
-     */
-    public function getStrategy() : StrategyInterface
-    {
-        return $this->strategy;
-    }
-
-    /**
-     * @param StrategyInterface $strategy
-     */
-    public function setStrategy(StrategyInterface $strategy): void
-    {
-        $this->strategy = $strategy;
-    }
-
-
-    private function initRun(?StrategyInterface $strategy) : void
+    private function initRun(?StrategyInterface $strategy): void
     {
         $this->runStartTime = time();
         $this->signalsManager->getListener()->listen();
 
-        if(!is_null($strategy)) {
+        if (!is_null($strategy)) {
             $this->setStrategy($strategy);
         }
     }
 
-    private function initProcess() : void
+    private function initProcess(): void
     {
         $this->processStartTime = intval(microtime(true) * 1000);
     }
 
-    private function assureProcessMinExecTime() : void
+    private function assureProcessMinExecTime(): void
     {
         $process_min_exec_time = $this->getOption('process_min_exec_time');
         $process_exec_time = intval(microtime(true) * 1000) - $this->processStartTime;
@@ -138,13 +138,13 @@ final class Daemon implements DaemonInterface
 
     private function shouldRestart(): bool
     {
-        return (
+        return
             $this->hasReachedTTL($this->getOption('run_ttl'))
             || $this->hasReachedMemoryLimit($this->getOption('run_memory_limit'))
-        );
+        ;
     }
 
-    private function runTime() : int
+    private function runTime(): int
     {
         return time() - $this->runStartTime;
     }
@@ -159,25 +159,8 @@ final class Daemon implements DaemonInterface
         return (memory_get_usage() / 1024 / 1024) >= $memoryLimit;
     }
 
-    private function stop() : void
+    private function stop(): void
     {
         exit();
-    }
-
-    /**
-     * Receive update from subject
-     * @link https://php.net/manual/en/splobserver.update.php
-     * @param SplSubject $subject <p>
-     * The <b>SplSubject</b> notifying the observer of an update.
-     * </p>
-     * @return void
-     * @since 5.1.0
-     */
-    public function update(SplSubject $subject) : void
-    {
-        if($subject instanceof SignalsListener) {
-
-            $this->signalsManager->handler()->handle($subject->signal(), $this);
-        }
     }
 }

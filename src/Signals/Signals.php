@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Snailweb\Daemon\Signals;
-
 
 final class Signals implements SignalsInterface
 {
@@ -12,12 +12,13 @@ final class Signals implements SignalsInterface
 
     public function __construct(array $signals)
     {
-        foreach($signals as $signal) {
+        foreach ($signals as $signal) {
             $this->add($signal);
         }
 
         $this->rewind();
     }
+
 //
 //    public function get() : array
 //    {
@@ -26,21 +27,24 @@ final class Signals implements SignalsInterface
 
     public function add(int $signal): void
     {
-        if(!in_array($signal, self::$acceptedSignals)) {
-            throw new \InvalidArgumentException(sprintf("The signal %d is invalid (expected: %s)", $signal, implode(', ', self::$acceptedSignals)));
+        if (!in_array($signal, self::$acceptedSignals)) {
+            throw new \InvalidArgumentException(sprintf('The signal %d is invalid (expected: %s)', $signal, implode(', ', self::$acceptedSignals)));
         }
 
-        if(in_array($signal, $this->signals)) {
-            throw new \InvalidArgumentException(sprintf("The signal %d is already added", $signal));
+        if (in_array($signal, $this->signals)) {
+            throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal));
         }
 
         array_push($this->signals, $signal);
     }
 
     /**
-     * Return the current element
-     * @link https://php.net/manual/en/iterator.current.php
-     * @return mixed Can return any type.
+     * Return the current element.
+     *
+     * @see https://php.net/manual/en/iterator.current.php
+     *
+     * @return mixed can return any type
+     *
      * @since 5.0.0
      */
     public function current()
@@ -49,46 +53,52 @@ final class Signals implements SignalsInterface
     }
 
     /**
-     * Move forward to next element
-     * @link https://php.net/manual/en/iterator.next.php
-     * @return void Any returned value is ignored.
+     * Move forward to next element.
+     *
+     * @see https://php.net/manual/en/iterator.next.php
      * @since 5.0.0
      */
-    public function next() : void
+    public function next(): void
     {
-        $this->key++;
+        ++$this->key;
     }
 
     /**
-     * Return the key of the current element
-     * @link https://php.net/manual/en/iterator.key.php
-     * @return mixed scalar on success, or null on failure.
+     * Return the key of the current element.
+     *
+     * @see https://php.net/manual/en/iterator.key.php
+     *
+     * @return mixed scalar on success, or null on failure
+     *
      * @since 5.0.0
      */
-    public function key() : int
+    public function key(): int
     {
         return $this->key;
     }
 
     /**
-     * Checks if current position is valid
-     * @link https://php.net/manual/en/iterator.valid.php
-     * @return boolean The return value will be casted to boolean and then evaluated.
-     * Returns true on success or false on failure.
+     * Checks if current position is valid.
+     *
+     * @see https://php.net/manual/en/iterator.valid.php
+     *
+     * @return bool The return value will be casted to boolean and then evaluated.
+     *              Returns true on success or false on failure.
+     *
      * @since 5.0.0
      */
-    public function valid() : bool
+    public function valid(): bool
     {
         return isset($this->signals[$this->key]);
     }
 
     /**
-     * Rewind the Iterator to the first element
-     * @link https://php.net/manual/en/iterator.rewind.php
-     * @return void Any returned value is ignored.
+     * Rewind the Iterator to the first element.
+     *
+     * @see https://php.net/manual/en/iterator.rewind.php
      * @since 5.0.0
      */
-    public function rewind() : void
+    public function rewind(): void
     {
         $this->key = 0;
     }

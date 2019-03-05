@@ -1,6 +1,8 @@
 <?php
 
-include dirname(__FILE__) . '/../../vendor/autoload.php';
+declare(strict_types=1);
+
+include dirname(__FILE__).'/../../vendor/autoload.php';
 
 use Snailweb\Daemon\Tests\FoobarDaemon;
 

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Snailweb\Daemon\Strategy;
-
 
 final class Timer extends AbstractStrategy
 {
@@ -15,15 +15,16 @@ final class Timer extends AbstractStrategy
         parent::__construct();
     }
 
-    protected function buildCondition() : \Closure
+    protected function buildCondition(): \Closure
     {
-        return function() {
+        return function () {
             $runTime = time() - $this->startTime;
-            return ($runTime < $this->maxTime);
+
+            return $runTime < $this->maxTime;
         };
     }
 
-    protected function initialize() : void
+    protected function initialize(): void
     {
         $this->startTime = time();
     }

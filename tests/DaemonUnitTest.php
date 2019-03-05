@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Snailweb\Daemon\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Snailweb\Daemon\AbstractDaemon;
 use Snailweb\Daemon\Daemon;
 use Snailweb\Daemon\Processor\ProcessorInterface;
-use Snailweb\Daemon\Signals\Manager\SignalsManager;
 use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
 use Snailweb\Daemon\Strategy\AbstractStrategy;
 use Snailweb\Daemon\Strategy\Forever;
-use Snailweb\Daemon\Strategy\Iteration;
-use Snailweb\Daemon\Strategy\StrategyInterface;
 
-
+/**
+ * @internal
+ * @coversNothing
+ */
 class DaemonUnitTest extends TestCase
 {
     use AccessProtectedTrait;
@@ -22,20 +23,23 @@ class DaemonUnitTest extends TestCase
     {
         $processor = $this->createMock(ProcessorInterface::class);
         $processor->expects($this->once())
-            ->method('setUp');
+            ->method('setUp')
+        ;
         $processor->expects($this->any())
-            ->method('process');
+            ->method('process')
+        ;
         $processor->expects($this->once())
-            ->method('tearDown');
+            ->method('tearDown')
+        ;
 
         $strategy = $this->createMock(AbstractStrategy::class);
         $strategy->expects($this->any())
-            ->method('test');
+            ->method('test')
+        ;
 
         $signalsManager = $this->createMock(SignalsManagerInterface::class);
         $daemon = new Daemon($processor, $signalsManager);
         $daemon->run($strategy);
-
 
         $this->assertSame($strategy, $daemon->getStrategy());
         // Test RunTime ?
@@ -46,8 +50,6 @@ class DaemonUnitTest extends TestCase
         // shouldRestart / stop
 
         // assureProcessMinExecTime
-
-
 
 //        $this->initRun($strategy);
 //        $this->getProcessor()->setUp();
@@ -65,16 +67,18 @@ class DaemonUnitTest extends TestCase
 //        $this->getProcessor()->tearDown();
     }
 
-
     public function testRunWithoutStrategy()
     {
         $processor = $this->createMock(ProcessorInterface::class);
         $processor->expects($this->once())
-        ->method('setUp');
+            ->method('setUp')
+        ;
         $processor->expects($this->atLeastOnce())
-            ->method('process');
+            ->method('process')
+        ;
         $processor->expects($this->once())
-            ->method('tearDown');
+            ->method('tearDown')
+        ;
 
         $signalsManager = $this->createMock(SignalsManagerInterface::class);
 

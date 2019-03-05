@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 // MANUAL TESTS
 $scriptName = 'runFoobar';
-
 
 $descriptorSpec = [
     0 => ['pipe', 'r'], // stdin is a pipe that the process will read from
     1 => ['file', './process-stdout-'.$scriptName.'.log', 'a'], // stdout is a file that the process will write in
     2 => ['file', './process-stderr-'.$scriptName.'.log', 'a'], // stderr is a file that the process will write in
 ];
-$processResource = proc_open("php " . dirname(__FILE__) . "/{$scriptName}.php", $descriptorSpec, $pipes);
+$processResource = proc_open('php '.dirname(__FILE__)."/{$scriptName}.php", $descriptorSpec, $pipes);
 
 if (!is_resource($processResource)) {
     echo 'fail';
@@ -20,34 +21,28 @@ $pid = $process_details['pid'];
 
 //$pid = shell_exec("php " . dirname(__FILE__) . "/{$scriptName}.php" . "> /dev/null 2>&1 & echo $!");
 
-
 echo $pid;
-
-
-
 
 function isRunning($pid)
 {
     try {
         $result = shell_exec(sprintf('ps %d', $pid));
-        if(count(preg_split("/\n/", $result)) > 2) {
+        if (count(preg_split("/\n/", $result)) > 2) {
             return true;
         }
-    } catch(Exception $e) {}
+    } catch (Exception $e) {
+    }
 
     return false;
 }
 
 //sleep(1);
 //if(file_exists ("/proc/{$pid}}")) {
-if(isRunning($pid)) {
+if (isRunning($pid)) {
     echo 'true';
-}
-else {
-
+} else {
     echo 'false';
 }
-
 
 //$pid = 25;
 // WORKS HERE, BUT NOT IN FUNCTIONNAL TEST : because it's execute from php-unit binary instead of php

@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Snailweb\Daemon\Strategy;
 
-
 final class Forever extends AbstractStrategy
 {
-    protected function buildCondition() : \Closure
+    protected function buildCondition(): \Closure
     {
-        return function() {
+        return function () {
             return true;
         };
     }
 
-    protected function initialize() : void
+    protected function initialize(): void
     {
     }
 }

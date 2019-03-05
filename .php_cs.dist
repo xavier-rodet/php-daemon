@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude('vendor')
+;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules([
+        '@PhpCsFixer' => true,
+        '@PSR2' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'declare_strict_types' => true,
+        'strict_comparison' => true,
+    ])
+    ->setFinder($finder)
+    ->setCacheFile(__DIR__.'/.php_cs.cache')
+;
