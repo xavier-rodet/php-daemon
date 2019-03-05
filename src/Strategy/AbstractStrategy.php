@@ -4,7 +4,7 @@
 namespace Snailweb\Daemon\Strategy;
 
 
-abstract class AbstractStrategy
+abstract class AbstractStrategy implements StrategyInterface
 {
     private $condition;
     private $numberOfIterations;
@@ -26,12 +26,12 @@ abstract class AbstractStrategy
         return $test;
     }
 
-    protected function numberOfIterations()
+    protected function numberOfIterations() : int
     {
         return $this->numberOfIterations;
     }
 
     abstract protected function buildCondition() : \Closure;
 
-    abstract protected function initialize();
+    abstract protected function initialize() : void;
 }

@@ -30,14 +30,27 @@ class FoobarDaemon extends Snailweb\Daemon\AbstractDaemon {
 
 
 ### Instanciation
+
+Run daemon forever
 ```
 $foobar = new FoobarDaemon();
 $foobar->run();
 ```
 
+Run daemon for 5 process iterations
+```
+$foobar = new FoobarDaemon();
+$foobar->run(new Snailweb\Daemon\Strategy\Iteration(5));
+```
+
+Run daemon for 1 minute
+```
+$foobar = new FoobarDaemon();
+$foobar->run(new Snailweb\Daemon\Strategy\Timer(60));
+```
 
 ## Recommandations
-PHP is not the safer way to run process because of memory leaks, to avoid it this Daemon will automatically restart depending of lifetime and memory usage (set by default options).
+PHP is not the safer way to run process because of memory leaks, to avoid it this Daemon will automatically restart depending of his lifetime and memory usage.
 
 That means you MUST use a service like [Supervisor](http://supervisord.org/) to run this daemon truly forever !
 

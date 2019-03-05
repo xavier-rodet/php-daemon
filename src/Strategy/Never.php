@@ -4,7 +4,7 @@
 namespace Snailweb\Daemon\Strategy;
 
 
-class Never extends AbstractStrategy
+final class Never extends AbstractStrategy
 {
 
     protected function buildCondition(): \Closure
@@ -14,7 +14,7 @@ class Never extends AbstractStrategy
         };
     }
 
-    protected function initialize()
+    protected function initialize() : void
     {
     }
 }

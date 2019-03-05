@@ -4,7 +4,7 @@
 namespace Snailweb\Daemon\Strategy;
 
 
-class Timer extends AbstractStrategy
+final class Timer extends AbstractStrategy
 {
     private $maxTime;
     private $startTime;
@@ -23,7 +23,7 @@ class Timer extends AbstractStrategy
         };
     }
 
-    protected function initialize()
+    protected function initialize() : void
     {
         $this->startTime = time();
     }

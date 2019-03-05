@@ -4,7 +4,7 @@
 namespace Snailweb\Daemon\Strategy;
 
 
-class Iteration extends AbstractStrategy
+final class Iteration extends AbstractStrategy
 {
     protected $maxIterations;
 
@@ -21,7 +21,7 @@ class Iteration extends AbstractStrategy
         };
     }
 
-    protected function initialize()
+    protected function initialize() : void
     {
     }
 }

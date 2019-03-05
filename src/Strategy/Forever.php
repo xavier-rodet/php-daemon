@@ -4,7 +4,7 @@
 namespace Snailweb\Daemon\Strategy;
 
 
-class Forever extends AbstractStrategy
+final class Forever extends AbstractStrategy
 {
     protected function buildCondition() : \Closure
     {
@@ -13,7 +13,7 @@ class Forever extends AbstractStrategy
         };
     }
 
-    protected function initialize()
+    protected function initialize() : void
     {
     }
 }

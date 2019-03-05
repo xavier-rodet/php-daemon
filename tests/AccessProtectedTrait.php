@@ -3,7 +3,7 @@
 
 namespace Snailweb\Daemon\Tests;
 
-
+// Rename ClearVisibility ? créer un repo Github !!
 trait AccessProtectedTrait
 {
     /**
