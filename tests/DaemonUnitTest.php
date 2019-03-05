@@ -20,12 +20,10 @@ class DaemonUnitTest extends TestCase
 
     public function testRunWithStrategy()
     {
-        $iterations = 3;
-
         $processor = $this->createMock(ProcessorInterface::class);
         $processor->expects($this->once())
             ->method('setUp');
-        $processor->expects($this->exactly($iterations))
+        $processor->expects($this->any())
             ->method('process');
         $processor->expects($this->once())
             ->method('tearDown');
@@ -35,10 +33,9 @@ class DaemonUnitTest extends TestCase
             ->method('test');
 
         $signalsManager = $this->createMock(SignalsManagerInterface::class);
-//        $signalsManager->expects($this->once())
-//            ->method('listener')
         $daemon = new Daemon($processor, $signalsManager);
         $daemon->run($strategy);
+
 
         $this->assertSame($strategy, $daemon->getStrategy());
         // Test RunTime ?
