@@ -5,14 +5,14 @@ namespace Snailweb\Daemon\Tests;
 use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\AbstractDaemon;
 use Snailweb\Daemon\Daemon;
-use Snailweb\Daemon\DaemonInterface;
 use Snailweb\Daemon\Processor\ProcessorInterface;
+use Snailweb\Daemon\Signals\Manager\SignalsManager;
+use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
+use Snailweb\Daemon\Strategy\AbstractStrategy;
 use Snailweb\Daemon\Strategy\Forever;
 use Snailweb\Daemon\Strategy\Iteration;
-use Snailweb\Daemon\Strategy\Never;
 use Snailweb\Daemon\Strategy\StrategyInterface;
 
-\DG\BypassFinals::enable();
 
 class DaemonUnitTest extends TestCase
 {
@@ -30,15 +30,14 @@ class DaemonUnitTest extends TestCase
         $processor->expects($this->once())
             ->method('tearDown');
 
-        $strategy = $this->getMockBuilder(Iteration::class)
-            ->enableProxyingToOriginalMethods()
-            ->setConstructorArgs([$iterations])
-            ->getMock();
-        $strategy->expects($this->exactly($iterations+1))
+        $strategy = $this->createMock(AbstractStrategy::class);
+        $strategy->expects($this->any())
             ->method('test');
 
-
-        $daemon = new Daemon($processor);
+        $signalsManager = $this->createMock(SignalsManagerInterface::class);
+//        $signalsManager->expects($this->once())
+//            ->method('listener')
+        $daemon = new Daemon($processor, $signalsManager);
         $daemon->run($strategy);
 
         $this->assertSame($strategy, $daemon->getStrategy());
@@ -80,7 +79,10 @@ class DaemonUnitTest extends TestCase
         $processor->expects($this->once())
             ->method('tearDown');
 
-        $daemon = new Daemon($processor, ['run_ttl' => 1]);
+        $signalsManager = $this->createMock(SignalsManagerInterface::class);
+
+        $daemon = new Daemon($processor, $signalsManager);
+        $daemon->assignOptions(['run_ttl' => 1]);
         $daemon->run();
 
         $this->assertSame(new Forever(), $daemon->getStrategy());

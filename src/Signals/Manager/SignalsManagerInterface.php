@@ -4,13 +4,13 @@
 namespace Snailweb\Daemon\Signals\Manager;
 
 
-use Snailweb\Daemon\Signals\Handler\AbstractSignalsHandler;
-use Snailweb\Daemon\Signals\Listener\SignalsListener;
-use Snailweb\Daemon\Signals\Signals;
+use Snailweb\Daemon\Signals\Handler\SignalsHandlerInterface;
+use Snailweb\Daemon\Signals\Listener\SignalsListenerInterface;
+use Snailweb\Daemon\Signals\SignalsInterface;
 
 interface SignalsManagerInterface
 {
-    public function getSignals() : Signals;
-    public function getListener() : SignalsListener;
-    public function getHandler() : AbstractSignalsHandler;
+    public function getSignals() : SignalsInterface;
+    public function getListener() : SignalsListenerInterface;
+    public function getHandler() : SignalsHandlerInterface;
 }

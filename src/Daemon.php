@@ -7,8 +7,7 @@ namespace Snailweb\Daemon;
 use Prophecy\Exception\InvalidArgumentException;
 use Snailweb\Daemon\Processor\ProcessorInterface;
 use Snailweb\Daemon\Signals\Listener\SignalsListener;
-use Snailweb\Daemon\Signals\Manager\SignalsManager;
-use Snailweb\Daemon\Strategy\AbstractStrategy;
+use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
 use Snailweb\Daemon\Strategy\Forever;
 use Snailweb\Daemon\Strategy\StrategyInterface;
 use SplSubject;
@@ -24,16 +23,17 @@ final class Daemon implements DaemonInterface
     private $strategy;
 
 
-    public function __construct(ProcessorInterface $processor, SignalsManager $signalsManager)
+    public function __construct(ProcessorInterface $processor, SignalsManagerInterface $signalsManager)
     {
         $this->options = $this->getDefaultOptions();
         $this->setStrategy(new Forever());
         $this->processor = $processor;
         $this->signalsManager = $signalsManager;
-        $this->signalsManager->listener()->attach($this);
+        // We will be observing the SignalsListener
+        $this->signalsManager->getListener()->attach($this);
     }
 
-    public function run(AbstractStrategy $strategy = null) : void
+    public function run(StrategyInterface $strategy = null) : void
     {
         $this->initRun($strategy);
         $this->getProcessor()->setUp();
@@ -111,10 +111,10 @@ final class Daemon implements DaemonInterface
     }
 
 
-    private function initRun(?AbstractStrategy $strategy) : void
+    private function initRun(?StrategyInterface $strategy) : void
     {
         $this->runStartTime = time();
-        $this->signalsManager->listener()->listen();
+        $this->signalsManager->getListener()->listen();
 
         if(!is_null($strategy)) {
             $this->setStrategy($strategy);

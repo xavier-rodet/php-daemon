@@ -4,9 +4,9 @@
 namespace Snailweb\Daemon\Signals\Manager;
 
 
-use Snailweb\Daemon\Signals\Handler\AbstractSignalsHandler;
-use Snailweb\Daemon\Signals\Listener\SignalsListener;
-use Snailweb\Daemon\Signals\Signals;
+use Snailweb\Daemon\Signals\Handler\SignalsHandlerInterface;
+use Snailweb\Daemon\Signals\Listener\SignalsListenerInterface;
+use Snailweb\Daemon\Signals\SignalsInterface;
 
 final class SignalsManager implements SignalsManagerInterface
 {
@@ -14,7 +14,7 @@ final class SignalsManager implements SignalsManagerInterface
     private $listener;
     private $handler;
 
-    public function __construct(Signals $signals, SignalsListener $listener, \SignalsHandler $handler)
+    public function __construct(SignalsInterface $signals, SignalsListenerInterface $listener, SignalsHandlerInterface $handler)
     {
         $this->signals = $signals;
 
@@ -25,17 +25,17 @@ final class SignalsManager implements SignalsManagerInterface
         $this->handler->assign($signals);
     }
 
-    public function getSignals(): Signals
+    public function getSignals(): SignalsInterface
     {
         return $this->signals;
     }
 
-    public function getListener(): SignalsListener
+    public function getListener(): SignalsListenerInterface
     {
         return $this->listener;
     }
 
-    public function getHandler(): AbstractSignalsHandler
+    public function getHandler(): SignalsHandlerInterface
     {
         return $this->handler;
     }
