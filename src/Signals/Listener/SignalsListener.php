@@ -43,9 +43,7 @@ final class SignalsListener implements SignalsListenerInterface
      */
     public function attach(SplObserver $observer): void
     {
-        if (!in_array($observer, $this->observers)) {
-            array_push($this->observers, $observer);
-        }
+        $this->observers[] = $observer;
     }
 
     /**
@@ -61,7 +59,7 @@ final class SignalsListener implements SignalsListenerInterface
      */
     public function detach(SplObserver $observer): void
     {
-        if ($key = array_search($observer, $this->observers)) {
+        if (is_int($key = array_search($observer, $this->observers, true))) {
             unset($this->observers[$key]);
         }
     }

@@ -28,7 +28,7 @@ final class Daemon implements DaemonInterface
         $this->setStrategy(new Forever());
         $this->processor = $processor;
         $this->signalsManager = $signalsManager;
-        // We will be observing the SignalsListener
+        // We will observe the SignalsListener
         $this->signalsManager->getListener()->attach($this);
     }
 
@@ -88,6 +88,7 @@ final class Daemon implements DaemonInterface
      */
     public function update(SplSubject $subject): void
     {
+        // When SignalsListener notify us of a new signal, we pass it to SignalsHandler
         if ($subject instanceof SignalsListener) {
             $this->signalsManager->handler()->handle($subject->signal(), $this);
         }
