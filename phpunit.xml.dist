@@ -4,14 +4,11 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.5/phpunit.xsd"
          backupGlobals="false"
-         cacheResult="false"
+         cacheResult="true"
          colors="true"
 >
     <php>
         <ini name="error_reporting" value="-1" />
-        <env name="APP_ENV" value="test" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <!--<includePath>/other/include/path/</includePath>-->
     </php>
 
     <testsuites>
@@ -21,8 +18,14 @@
     </testsuites>
 
     <filter>
-        <whitelist>
+        <whitelist addUncoveredFilesFromWhitelist="true" processUncoveredFilesFromWhitelist="false">
             <directory>src/</directory>
         </whitelist>
     </filter>
+
+    <logging>
+        <log type="coverage-html" target="var/log/coverage/" lowUpperBound="35" highLowerBound="70"/>
+        <!--<log type="coverage-clover" target="var/log/coverage/clover.xml"/>-->
+        <!--<log type="junit" target="var/log/coverage/junit.xml" logIncompleteSkipped="false"/>-->
+    </logging>
 </phpunit>
