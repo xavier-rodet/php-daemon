@@ -7,10 +7,6 @@ namespace Snailweb\Daemon\Tests\Strategy;
 use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\Strategy\Timer;
 
-/**
- * @internal
- * @coversNothing
- */
 class TimerTest extends TestCase
 {
     /**

@@ -11,10 +11,7 @@ use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
 use Snailweb\Daemon\Strategy\Forever;
 use Snailweb\Daemon\Strategy\StrategyInterface;
 
-/**
- * @internal
- * @coversNothing
- */
+
 class DaemonTest extends TestCase
 {
     public function testRun()

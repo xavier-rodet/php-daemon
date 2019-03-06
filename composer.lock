@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f5591324cc342e889b105af745e1ea3",
+    "content-hash": "1a08a21520effeb7c68644e6e44e2371",
     "packages": [],
     "packages-dev": [
         {
@@ -1787,6 +1787,39 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "snailweb/php-tests-helpers",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/xavier-rodet/php-tests-helpers.git",
+                "reference": "c1c377e3287dd9c095f29f62543f4ad63d82459f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/xavier-rodet/php-tests-helpers/zipball/c1c377e3287dd9c095f29f62543f4ad63d82459f",
+                "reference": "c1c377e3287dd9c095f29f62543f4ad63d82459f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.14"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Snailweb\\Helpers\\Tests\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Xavier RODET",
+                    "email": "xavier.rodet@gmail.com"
+                }
+            ],
+            "description": "PHP tests helpers",
+            "time": "2019-03-06T14:50:52+00:00"
         },
         {
             "name": "symfony/console",

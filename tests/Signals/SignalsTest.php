@@ -6,13 +6,8 @@ namespace Snailweb\Daemon\Tests\Signals;
 
 use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\Signals\Signals;
-use Snailweb\Daemon\Tests\AccessProtectedTrait;
-use Snailweb\Daemon\Tests\TestIteratorTrait;
+use Snailweb\Helpers\Tests\TestIteratorTrait;
 
-/**
- * @internal
- * @coversNothing
- */
 class SignalsTest extends TestCase
 {
     use TestIteratorTrait {
@@ -31,7 +26,6 @@ class SignalsTest extends TestCase
         $signals = $this->getAttribute($this->iterator, 'signals');
         $this->assertSame([SIGINT, SIGTERM], $signals);
     }
-
 
 //    public function testAdd()
 //    {

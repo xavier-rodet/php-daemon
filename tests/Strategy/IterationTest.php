@@ -7,10 +7,7 @@ namespace Snailweb\Daemon\Tests\Strategy;
 use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\Strategy\Iteration;
 
-/**
- * @internal
- * @coversNothing
- */
+
 class IterationTest extends TestCase
 {
     /**
