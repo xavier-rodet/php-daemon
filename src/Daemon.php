@@ -50,9 +50,16 @@ final class Daemon implements DaemonInterface
         $this->getProcessor()->tearDown();
     }
 
-    public function assignOptions(array $options): void
+    public function setOptions(array $options): void
     {
-        $this->options = array_merge($this->options, $options);
+        foreach ($options as $option) {
+            $this->setOption($option);
+        }
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 
     public function getProcessor(): ProcessorInterface
@@ -90,7 +97,7 @@ final class Daemon implements DaemonInterface
     {
         // When SignalsListener notify us of a new signal, we pass it to SignalsHandler
         if ($subject instanceof SignalsListener) {
-            $this->signalsManager->handler()->handle($subject->signal(), $this);
+            $this->signalsManager->handler()->handle($subject->getInterceptedSignal(), $this);
         }
     }
 
@@ -106,10 +113,37 @@ final class Daemon implements DaemonInterface
     private function getOption(string $name)
     {
         if (!isset($this->options[$name])) {
-            throw new InvalidArgumentException(sprintf("%s option doesn't exist", $name));
+            throw new InvalidArgumentException(
+                sprintf(
+                    "%s option doesn't exist (expected : %s)",
+                    $name,
+                    implode(
+                        ', ',
+                        array_keys($this->options)
+                    )
+                )
+            );
         }
 
         return $this->options[$name];
+    }
+
+    private function setOption(string $name, $value)
+    {
+        if (!isset($this->options[$name])) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s option is invalid (expected : %s)',
+                    $name,
+                    implode(
+                        ', ',
+                        array_keys($this->options)
+                    )
+                )
+            );
+        }
+
+        $this->options[$name] = $value;
     }
 
     private function initRun(?StrategyInterface $strategy): void

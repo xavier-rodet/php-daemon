@@ -17,7 +17,7 @@ abstract class AbstractStrategy implements StrategyInterface
 
     public function test(): bool
     {
-        if (0 === $this->numberOfIterations) {
+        if (0 === $this->numberOfIterations()) {
             $this->initialize();
         }
 

@@ -12,7 +12,7 @@ final class SignalsListener implements SignalsListenerInterface
     use AssignSignalsTrait;
 
     private $observers = [];
-    private $signal;
+    private $interceptedSignal;
 
     public function listen(): void
     {
@@ -25,9 +25,9 @@ final class SignalsListener implements SignalsListenerInterface
         }
     }
 
-    public function getSignal(): int
+    public function getInterceptedSignal(): int
     {
-        return $this->signal;
+        return $this->interceptedSignal;
     }
 
     /**
@@ -80,7 +80,7 @@ final class SignalsListener implements SignalsListenerInterface
     private function intercept(int $signal): void
     {
         if (in_array($signal, $this->signals)) {
-            $this->signal = $signal;
+            $this->interceptedSignal = $signal;
             $this->notify();
         }
     }

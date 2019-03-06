@@ -16,13 +16,14 @@ final class SignalsManager implements SignalsManagerInterface
 
     public function __construct(SignalsInterface $signals, SignalsListenerInterface $listener, SignalsHandlerInterface $handler)
     {
-        $this->signals = $signals;
+        $this->setSignals($signals);
 
-        $this->listener = $listener;
-        $this->listener->assign($signals);
+        $listener->setSignals($signals);
+        $this->setListener($listener);
 
-        $this->handler = $handler;
-        $this->handler->assign($signals);
+        $handler->setSignals($signals);
+        $this->setHandler($handler);
+
     }
 
     public function getSignals(): SignalsInterface
@@ -38,5 +39,20 @@ final class SignalsManager implements SignalsManagerInterface
     public function getHandler(): SignalsHandlerInterface
     {
         return $this->handler;
+    }
+
+    public function setSignals(SignalsInterface $signals): void
+    {
+        $this->signals = $signals;
+    }
+
+    public function setListener(SignalsListenerInterface $listener): void
+    {
+        $this->listener = $listener;
+    }
+
+    public function setHandler(SignalsHandlerInterface $handler): void
+    {
+        $this->handler = $handler;
     }
 }

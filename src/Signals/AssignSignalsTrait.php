@@ -8,8 +8,13 @@ trait AssignSignalsTrait
 {
     private $signals;
 
-    public function assign(Signals $signals): void
+    public function setSignals(SignalsInterface $signals): void
     {
         $this->signals = $signals;
+    }
+
+    public function getSignals(): SignalsInterface
+    {
+        return $this->signals;
     }
 }

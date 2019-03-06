@@ -16,14 +16,8 @@ final class Signals implements SignalsInterface
             $this->add($signal);
         }
 
-        $this->rewind();
+        $this->key = 0;
     }
-
-//
-//    public function get() : array
-//    {
-//        return $this->signals;
-//    }
 
     public function add(int $signal): void
     {
@@ -35,7 +29,7 @@ final class Signals implements SignalsInterface
             throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal));
         }
 
-        array_push($this->signals, $signal);
+        $this->signals[] = $signal;
     }
 
     /**

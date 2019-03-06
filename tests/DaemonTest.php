@@ -8,18 +8,16 @@ use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\Daemon;
 use Snailweb\Daemon\Processor\ProcessorInterface;
 use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
-use Snailweb\Daemon\Strategy\AbstractStrategy;
 use Snailweb\Daemon\Strategy\Forever;
+use Snailweb\Daemon\Strategy\StrategyInterface;
 
 /**
  * @internal
  * @coversNothing
  */
-class DaemonUnitTest extends TestCase
+class DaemonTest extends TestCase
 {
-    use AccessProtectedTrait;
-
-    public function testRunWithStrategy()
+    public function testRun()
     {
         $processor = $this->createMock(ProcessorInterface::class);
         $processor->expects($this->once())
@@ -32,7 +30,7 @@ class DaemonUnitTest extends TestCase
             ->method('tearDown')
         ;
 
-        $strategy = $this->createMock(AbstractStrategy::class);
+        $strategy = $this->createMock(StrategyInterface::class);
         $strategy->expects($this->any())
             ->method('test')
         ;
@@ -67,25 +65,12 @@ class DaemonUnitTest extends TestCase
 //        $this->getProcessor()->tearDown();
     }
 
-    public function testRunWithoutStrategy()
+    public function testDaemonDefaultStrategy()
     {
         $processor = $this->createMock(ProcessorInterface::class);
-        $processor->expects($this->once())
-            ->method('setUp')
-        ;
-        $processor->expects($this->atLeastOnce())
-            ->method('process')
-        ;
-        $processor->expects($this->once())
-            ->method('tearDown')
-        ;
-
         $signalsManager = $this->createMock(SignalsManagerInterface::class);
 
         $daemon = new Daemon($processor, $signalsManager);
-        $daemon->assignOptions(['run_ttl' => 1]);
-        $daemon->run();
-
-        $this->assertSame(new Forever(), $daemon->getStrategy());
+        $this->assertEquals(new Forever(), $daemon->getStrategy());
     }
 }
