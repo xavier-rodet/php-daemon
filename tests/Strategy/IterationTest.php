@@ -22,7 +22,7 @@ class IterationTest extends TestCase
         $strategy = new Iteration($iterations);
 
         // in-range iterations will pass the test
-        for ($i = 1; $i <= $iterations; ++$i) {
+        for ($i = 1; $i <= $iterations; $i++) {
             $this->assertTrue($strategy->test(), sprintf('at iteration %d/%d)', $i, $iterations));
         }
 

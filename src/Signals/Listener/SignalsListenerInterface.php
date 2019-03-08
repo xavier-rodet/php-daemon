@@ -12,5 +12,7 @@ interface SignalsListenerInterface extends \SplSubject
 
     public function getSignals(): SignalsInterface;
 
+    public function intercept(int $signal): void;
+
     public function listen(): void;
 }

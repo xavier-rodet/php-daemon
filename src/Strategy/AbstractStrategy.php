@@ -22,7 +22,7 @@ abstract class AbstractStrategy implements StrategyInterface
         }
 
         $test = $this->condition->__invoke();
-        ++$this->numberOfIterations;
+        $this->numberOfIterations++;
 
         return $test;
     }

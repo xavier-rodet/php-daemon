@@ -6,9 +6,6 @@ namespace Snailweb\Daemon\Signals;
 
 final class Signals implements SignalsInterface
 {
-    const ERR_INVALID = 0;
-    const ERR_ALREADY_EXIST = 1;
-
     private $key;
 
     // Signals which can be caught : https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals
@@ -28,14 +25,19 @@ final class Signals implements SignalsInterface
     public function add(int $signal): void
     {
         if (!in_array($signal, self::$acceptedSignals)) {
-            throw new \InvalidArgumentException(sprintf('The signal %d is invalid (expected: %s)', $signal, implode(', ', self::$acceptedSignals)), self::ERR_INVALID);
+            throw new \InvalidArgumentException(sprintf('The signal %d is invalid (expected: %s)', $signal, implode(', ', self::$acceptedSignals)));
         }
 
         if (in_array($signal, $this->signals)) {
-            throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal), self::ERR_ALREADY_EXIST);
+            throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal));
         }
 
         $this->signals[] = $signal;
+    }
+
+    public function toArray(): array
+    {
+        return $this->signals;
     }
 
     /**
@@ -60,7 +62,7 @@ final class Signals implements SignalsInterface
      */
     public function next(): void
     {
-        ++$this->key;
+        $this->key++;
     }
 
     /**

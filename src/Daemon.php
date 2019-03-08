@@ -14,7 +14,6 @@ use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
 use Snailweb\Daemon\Signals\Signals;
 use Snailweb\Daemon\Strategy\Forever;
 use Snailweb\Daemon\Strategy\StrategyInterface;
-use SplSubject;
 
 final class Daemon implements DaemonInterface
 {
@@ -68,8 +67,8 @@ final class Daemon implements DaemonInterface
 
     public function setOptions(array $options): void
     {
-        foreach ($options as $option) {
-            $this->setOption($option);
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
         }
     }
 
@@ -103,12 +102,12 @@ final class Daemon implements DaemonInterface
      *
      * @see https://php.net/manual/en/splobserver.update.php
      *
-     * @param SplSubject $signalListener
-     * @param null|int   $signal
+     * @param \SplSubject $signalListener
+     * @param null|int    $signal
      *
      * @since 5.1.0
      */
-    public function update(SplSubject $signalListener, int $signal = null): void
+    public function update(\SplSubject $signalListener, int $signal = null): void
     {
         // When SignalsListener notify us of a new signal, we pass it to SignalsHandler
         if ($signalListener instanceof SignalsListenerInterface) {
@@ -128,24 +127,6 @@ final class Daemon implements DaemonInterface
             'run_memory_limit' => 128, // MB
             'process_min_exec_time' => 100, // milliseconds
         ];
-    }
-
-    private function getOption(string $name)
-    {
-        if (!isset($this->options[$name])) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    "%s option doesn't exist (expected : %s)",
-                    $name,
-                    implode(
-                        ', ',
-                        array_keys($this->options)
-                    )
-                )
-            );
-        }
-
-        return $this->options[$name];
     }
 
     private function setOption(string $name, $value)
@@ -183,7 +164,7 @@ final class Daemon implements DaemonInterface
 
     private function assureProcessMinExecTime(): void
     {
-        $process_min_exec_time = $this->getOption('process_min_exec_time');
+        $process_min_exec_time = $this->options['process_min_exec_time'];
         $process_exec_time = intval(microtime(true) * 1000) - $this->processStartTime;
 
         if ($process_exec_time < $process_min_exec_time) {
@@ -194,8 +175,8 @@ final class Daemon implements DaemonInterface
     private function shouldRestart(): bool
     {
         return
-            $this->hasReachedTTL($this->getOption('run_ttl'))
-            || $this->hasReachedMemoryLimit($this->getOption('run_memory_limit'))
+            $this->hasReachedTTL($this->options['run_ttl'])
+            || $this->hasReachedMemoryLimit($this->options['run_memory_limit'])
         ;
     }
 

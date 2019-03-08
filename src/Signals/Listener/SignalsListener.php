@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Snailweb\Daemon\Signals\Listener;
 
-use Snailweb\Daemon\Daemon;
 use Snailweb\Daemon\Signals\SignalsAccessorTrait;
 
 final class SignalsListener implements SignalsListenerInterface
@@ -17,7 +16,7 @@ final class SignalsListener implements SignalsListenerInterface
     {
         pcntl_async_signals(true);
 
-        foreach ($this->signals as $signal) {
+        foreach ($this->getSignals() as $signal) {
             if (!pcntl_signal($signal, [$this, 'intercept'])) {
                 throw new \RuntimeException(sprintf('Failed listening to signal %d', $signal));
             }
@@ -30,6 +29,7 @@ final class SignalsListener implements SignalsListenerInterface
      * @see https://php.net/manual/en/splsubject.attach.php
      *
      * @param \SplObserver $daemon
+     *
      * @since 5.1.0
      */
     public function attach(\SplObserver $daemon): void
@@ -43,6 +43,7 @@ final class SignalsListener implements SignalsListenerInterface
      * @see https://php.net/manual/en/splsubject.detach.php
      *
      * @param \SplObserver $daemon
+     *
      * @since 5.1.0
      */
     public function detach(\SplObserver $daemon): void
@@ -57,7 +58,8 @@ final class SignalsListener implements SignalsListenerInterface
      *
      * @see https://php.net/manual/en/splsubject.notify.php
      * @since 5.1.0
-     * @param int|null $signal
+     *
+     * @param null|int $signal
      */
     public function notify(int $signal = null): void
     {
@@ -66,9 +68,9 @@ final class SignalsListener implements SignalsListenerInterface
         }
     }
 
-    private function intercept(int $signal): void
+    public function intercept(int $signal): void
     {
-        if (in_array($signal, $this->signals)) {
+        if (in_array($signal, $this->getSignals()->toArray())) {
             $this->notify($signal);
         }
     }

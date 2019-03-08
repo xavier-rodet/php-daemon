@@ -32,17 +32,20 @@ class SignalsTest extends TestCase
         $this->assertSame([SIGINT, SIGTERM], $signals);
     }
 
+    public function toArray()
+    {
+        $this->assertSame([SIGINT, SIGTERM], $this->signals->toArray());
+    }
+
     public function testAddInvalidSignal()
     {
         $this->expectException('InvalidArgumentException');
-        $this->expectExceptionCode(Signals::ERR_INVALID);
         $this->signals->add(15213);
     }
 
     public function testAddAlreadyExistSignal()
     {
         $this->expectException('InvalidArgumentException');
-        $this->expectExceptionCode(Signals::ERR_ALREADY_EXIST);
         $this->signals->add(SIGINT);
     }
 
@@ -50,6 +53,6 @@ class SignalsTest extends TestCase
     {
         $this->signals->add(SIGHUP);
         $signals = $this->getAttribute($this->signals, 'signals');
-        $this->assertTrue(in_array(SIGINT, $signals));
+        $this->assertTrue(in_array(SIGHUP, $signals));
     }
 }
