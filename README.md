@@ -53,7 +53,7 @@ final class AdminNotifierProcessor implements \Snailweb\Daemon\Processor\Process
 
 ### Basic Daemon usage :
 ```php
-$processor = new AdminNotifierProcessor();
+$processor = new AdminNotifierProcessor($dao, $notifier);
 
 $daemon = new \Snailweb\Daemon\Daemon($processor);
 $daemon->run();
