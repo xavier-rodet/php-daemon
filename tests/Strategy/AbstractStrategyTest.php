@@ -8,6 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Snailweb\Daemon\Strategy\AbstractStrategy;
 use Snailweb\Daemon\Strategy\StrategyInterface;
 
+/**
+ * @internal
+ */
 class AbstractStrategyTest extends TestCase
 {
     public function testConstruct()

@@ -6,11 +6,17 @@ namespace Snailweb\Daemon\Signals;
 
 final class Signals implements SignalsInterface
 {
+    const ERR_INVALID = 0;
+    const ERR_ALREADY_EXIST = 1;
+
     private $key;
-    private static $acceptedSignals = [SIGINT, SIGTERM];
+
+    // Signals which can be caught : https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals
+    // And are available through ext-pcntl : http://php.net/manual/fr/pcntl.constants.php
+    private static $acceptedSignals = [SIGABRT, SIGIOT, SIGALRM, SIGVTALRM, SIGPROF, SIGBUS, SIGCHLD, SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT, SIGPIPE, SIGPOLL, SIGQUIT, SIGSEGV, SIGSTOP, SIGSYS, SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU, SIGTRAP, SIGURG, SIGUSR1, SIGUSR2, SIGXCPU, SIGXFSZ, SIGWINCH];
     private $signals = [];
 
-    public function __construct(array $signals)
+    public function __construct(array $signals = [])
     {
         foreach ($signals as $signal) {
             $this->add($signal);
@@ -22,11 +28,11 @@ final class Signals implements SignalsInterface
     public function add(int $signal): void
     {
         if (!in_array($signal, self::$acceptedSignals)) {
-            throw new \InvalidArgumentException(sprintf('The signal %d is invalid (expected: %s)', $signal, implode(', ', self::$acceptedSignals)));
+            throw new \InvalidArgumentException(sprintf('The signal %d is invalid (expected: %s)', $signal, implode(', ', self::$acceptedSignals)), self::ERR_INVALID);
         }
 
         if (in_array($signal, $this->signals)) {
-            throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal));
+            throw new \InvalidArgumentException(sprintf('The signal %d is already added', $signal), self::ERR_ALREADY_EXIST);
         }
 
         $this->signals[] = $signal;

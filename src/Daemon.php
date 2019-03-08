@@ -6,8 +6,12 @@ namespace Snailweb\Daemon;
 
 use Prophecy\Exception\InvalidArgumentException;
 use Snailweb\Daemon\Processor\ProcessorInterface;
+use Snailweb\Daemon\Signals\Handler\DefaultSignalHandler;
 use Snailweb\Daemon\Signals\Listener\SignalsListener;
+use Snailweb\Daemon\Signals\Listener\SignalsListenerInterface;
+use Snailweb\Daemon\Signals\Manager\SignalsManager;
 use Snailweb\Daemon\Signals\Manager\SignalsManagerInterface;
+use Snailweb\Daemon\Signals\Signals;
 use Snailweb\Daemon\Strategy\Forever;
 use Snailweb\Daemon\Strategy\StrategyInterface;
 use SplSubject;
@@ -22,11 +26,23 @@ final class Daemon implements DaemonInterface
     private $signalsManager;
     private $strategy;
 
-    public function __construct(ProcessorInterface $processor, SignalsManagerInterface $signalsManager)
+    public function __construct(ProcessorInterface $processor, SignalsManagerInterface $signalsManager = null)
     {
         $this->options = $this->getDefaultOptions();
+
+        // Default strategy (can be override when calling run())
         $this->setStrategy(new Forever());
+
         $this->processor = $processor;
+
+        // Default signals manager won't affect default UNIX signal system
+        if (is_null($signalsManager)) {
+            $signals = new Signals(); // No signals
+            $signalsListener = new SignalsListener();
+            $signalsHandler = new DefaultSignalHandler();
+            $signalsManager = new SignalsManager($signals, $signalsListener, $signalsHandler);
+        }
+
         $this->signalsManager = $signalsManager;
         // We will observe the SignalsListener
         $this->signalsManager->getListener()->attach($this);
@@ -87,18 +103,22 @@ final class Daemon implements DaemonInterface
      *
      * @see https://php.net/manual/en/splobserver.update.php
      *
-     * @param SplSubject $subject <p>
-     *                            The <b>SplSubject</b> notifying the observer of an update.
-     *                            </p>
+     * @param SplSubject $signalListener
+     * @param null|int   $signal
      *
      * @since 5.1.0
      */
-    public function update(SplSubject $subject): void
+    public function update(SplSubject $signalListener, int $signal = null): void
     {
         // When SignalsListener notify us of a new signal, we pass it to SignalsHandler
-        if ($subject instanceof SignalsListener) {
-            $this->signalsManager->handler()->handle($subject->getInterceptedSignal(), $this);
+        if ($signalListener instanceof SignalsListenerInterface) {
+            $this->signalsManager->getHandler()->handle($signal, $this);
         }
+    }
+
+    public function stop(): void
+    {
+        exit();
     }
 
     private function getDefaultOptions(): array
@@ -192,10 +212,5 @@ final class Daemon implements DaemonInterface
     private function hasReachedMemoryLimit(int $memoryLimit): bool
     {
         return (memory_get_usage() / 1024 / 1024) >= $memoryLimit;
-    }
-
-    private function stop(): void
-    {
-        exit();
     }
 }

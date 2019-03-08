@@ -1790,20 +1790,21 @@
         },
         {
             "name": "snailweb/php-tests-helpers",
-            "version": "1.0.1",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/xavier-rodet/php-tests-helpers.git",
-                "reference": "c1c377e3287dd9c095f29f62543f4ad63d82459f"
+                "reference": "e9eaa22f36cb6d15c6c874dc3f65f1af23ebca0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/xavier-rodet/php-tests-helpers/zipball/c1c377e3287dd9c095f29f62543f4ad63d82459f",
-                "reference": "c1c377e3287dd9c095f29f62543f4ad63d82459f",
+                "url": "https://api.github.com/repos/xavier-rodet/php-tests-helpers/zipball/e9eaa22f36cb6d15c6c874dc3f65f1af23ebca0a",
+                "reference": "e9eaa22f36cb6d15c6c874dc3f65f1af23ebca0a",
                 "shasum": ""
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.14"
+                "friendsofphp/php-cs-fixer": "^2.14",
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "autoload": {
@@ -1819,7 +1820,7 @@
                 }
             ],
             "description": "PHP tests helpers",
-            "time": "2019-03-06T14:50:52+00:00"
+            "time": "2019-03-08T09:46:06+00:00"
         },
         {
             "name": "symfony/console",

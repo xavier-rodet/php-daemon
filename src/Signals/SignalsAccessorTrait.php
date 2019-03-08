@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Snailweb\Daemon\Signals;
 
-trait AssignSignalsTrait
+trait SignalsAccessorTrait
 {
     private $signals;
 

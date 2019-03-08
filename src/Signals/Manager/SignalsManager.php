@@ -23,7 +23,6 @@ final class SignalsManager implements SignalsManagerInterface
 
         $handler->setSignals($signals);
         $this->setHandler($handler);
-
     }
 
     public function getSignals(): SignalsInterface

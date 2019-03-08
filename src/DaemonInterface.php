@@ -22,4 +22,6 @@ interface DaemonInterface extends \SplObserver
     public function setStrategy(StrategyInterface $strategy): void;
 
     public function run(?StrategyInterface $strategy): void;
+
+    public function stop(): void;
 }
