@@ -12,7 +12,7 @@ That means you MUST use a service like [Supervisor](http://supervisord.org/) to 
 
 ### Create your processor
 Create a Processor to accomplish your task
-```
+```php
 final class AdminNotifierProcessor implements \Snailweb\Daemon\Processor\ProcessorInterface
 {
     private $dao;
@@ -52,7 +52,7 @@ final class AdminNotifierProcessor implements \Snailweb\Daemon\Processor\Process
 ```
 
 ### Basic Daemon usage :
-```
+```php
 $processor = new AdminNotifierProcessor();
 
 $daemon = new \Snailweb\Daemon\Daemon($processor);
@@ -64,13 +64,13 @@ By default daemon's strategy is to run forever however you can change his behavi
 ### Other's Daemon usage :
 
 Run daemon for 5 process iterations
-```
+```php
 $strategy = new Snailweb\Daemon\Strategy\Iteration(5);
 $daemon->run($strategy);
 ```
 
 Run daemon for 1 minute
-```
+```php
 $strategy = new Snailweb\Daemon\Strategy\Timer(60);
 $daemon->run($strategy);
 ```
@@ -80,7 +80,7 @@ You can easily create your own Strategy by extending `\Snailweb\Daemon\Strategy\
 ### Configure the daemon
 
 The default daemon configuration can be override
-```
+```php
 $daemon->setOptions([
     'run_ttl' => 86400, // the daemon will stop after 1 day of runtime
     'run_memory_limit' => 128, // the daemon will stop when he reached 128MB of memory usage
@@ -94,7 +94,7 @@ Note: you don't have to set all options, just the ones you want to override :)
 This daemon allow you to handle [UNIX signals](https://en.wikipedia.org/wiki/Signal_(IPC)#POSIX_signals) to change his behaviour.
 
 Create your SignalHandler
-```
+```php
 final class MySignalHandler extends \Snailweb\Daemon\Signals\Handler\AbstractSignalsHandler
 {
     public function handle(int $signal, Snailweb\Daemon\Daemon $daemon): void
@@ -122,7 +122,7 @@ final class MySignalHandler extends \Snailweb\Daemon\Signals\Handler\AbstractSig
 ```
 
 Apply the signal handler to your daemon :
-```
+```php
 $processor = new AdminNotifierProcessor();
 
 $signals = new \Snailweb\Daemon\Signals\Signals([SIGINT, SIGTERM]);
