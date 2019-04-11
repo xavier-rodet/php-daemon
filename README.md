@@ -1,6 +1,10 @@
 # php-daemon
 PHP Daemon which can intercept signals to stop running properly.
 
+## Installation
+
+```composer require snailweb/php-daemon```
+
 ## Recommendations
 PHP is not the safer way to run process because of memory leaks, to avoid it this Daemon will automatically stop depending on his lifetime and memory usage.
 
